@@ -32,7 +32,7 @@ public class ItemController {
     @GetMapping("/{id}")
     public Optional<ItemDto> getItem(
             @PathVariable Long id,
-            @RequestHeader(value = "X-Sharer-User-Id", required = false) Long userId
+            @RequestHeader("X-Sharer-User-Id") Long userId
     ) {
         return itemService.getById(id);
     }
@@ -40,7 +40,7 @@ public class ItemController {
     @GetMapping("/search")
     public Collection<ItemDto> search(
             @RequestParam String text,
-            @RequestHeader(value = "X-Sharer-User-Id", required = false) Long userId
+            @RequestHeader("X-Sharer-User-Id") Long userId
     ) {
         return itemService.search(text);
     }

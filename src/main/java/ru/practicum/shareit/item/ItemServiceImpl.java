@@ -12,6 +12,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDto> search(String text) {
+        if (text == null || text.isBlank()) {
+            return Collections.emptyList();
+        }
         return itemRepository.search(text).stream()
                 .map(ItemMapper::toItemDto)
                 .toList();

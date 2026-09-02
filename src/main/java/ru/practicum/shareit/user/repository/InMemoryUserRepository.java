@@ -4,17 +4,21 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private final Map<Long, User> users = new HashMap<>();
+    private final Set<String> emails = new HashSet<>();
 
     @Override
     public User save(User user) {
         user.setId(getNextId());
         users.put(user.getId(), user);
+        emails.add(user.getEmail());
         return user;
     }
 
@@ -25,18 +29,21 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User update(Long id, User newUser) {
+        emails.remove(users.get(id).getEmail());
         users.put(id, newUser);
+        emails.add(newUser.getEmail());
         return newUser;
     }
 
     @Override
-    public void delete(Long id) {
-        users.remove(id);
+    public void delete(User user) {
+        users.remove(user.getId());
+        emails.remove(user.getEmail());
     }
 
     @Override
     public boolean emailExists(String email) {
-        return users.values().stream().anyMatch(u -> u.getEmail().equals(email));
+        return emails.contains(email);
     }
 
     private long getNextId() {

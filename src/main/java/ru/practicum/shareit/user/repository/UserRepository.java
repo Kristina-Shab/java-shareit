@@ -11,7 +11,7 @@ public interface UserRepository {
 
     User update(Long id, User newUser);
 
-    void delete(Long id);
+    void delete(User user);
 
     boolean emailExists(String email);
 }

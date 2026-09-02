@@ -6,18 +6,22 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class InMemoryItemRepository implements ItemRepository {
     private final Map<Long, Item> items = new HashMap<>();
+    private final Map<Long, Set<Item>> itemsByOwner = new HashMap<>();
 
 
     @Override
     public Item save(Item item) {
         item.setId(getNextId());
         items.put(item.getId(), item);
+        itemsByOwner.computeIfAbsent(item.getOwner().getId(), k -> new HashSet<>()).add(item);
         return item;
     }
 
@@ -28,22 +32,20 @@ public class InMemoryItemRepository implements ItemRepository {
 
     @Override
     public Item update(Long id, Item newItem) {
+        Item oldItem = items.get(id);
+        itemsByOwner.get(oldItem.getOwner().getId()).remove(oldItem);
+        itemsByOwner.get(newItem.getOwner().getId()).add(newItem);
         items.put(id, newItem);
         return newItem;
     }
 
     @Override
     public Collection<Item> findByOwnerId(Long id) {
-        return items.values().stream()
-                .filter(i -> i.getOwner().getId().equals(id))
-                .toList();
+        return itemsByOwner.getOrDefault(id, Collections.emptySet());
     }
 
     @Override
     public Collection<Item> search(String text) {
-        if (text == null || text.isBlank()) {
-            return Collections.emptyList();
-        }
         return items.values().stream()
                 .filter(Item::getAvailable)
                 .filter(item -> item.getName().toLowerCase().contains(text.toLowerCase())
