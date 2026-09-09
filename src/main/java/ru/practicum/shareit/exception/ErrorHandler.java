@@ -25,4 +25,10 @@ public class ErrorHandler {
     public ErrorResponse handleConflict(ConflictException e) {
         return new ErrorResponse("Ошибка данных", e.getMessage());
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleForbidden(ForbiddenException e) {
+        return new ErrorResponse("Ошибка доступа", e.getMessage());
+    }
 }
