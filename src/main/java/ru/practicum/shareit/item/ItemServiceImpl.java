@@ -64,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
             throw new NotFoundException("У пользователя с id " + userId + " не найдена вещь с id " + id);
         }
         Item updatedItem = ItemMapper.updateItemFields(existingItem, itemRequest);
-        Item savedItem = itemRepository.update(id, updatedItem);
+        Item savedItem = itemRepository.save(updatedItem);
         return ItemMapper.toItemDto(savedItem);
     }
 }
