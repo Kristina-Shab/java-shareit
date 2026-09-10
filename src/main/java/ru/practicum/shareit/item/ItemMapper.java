@@ -3,12 +3,15 @@ package ru.practicum.shareit.item;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingDateDto;
+import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemBookingsDto;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemMapper {
@@ -44,7 +47,11 @@ public final class ItemMapper {
         return target;
     }
 
-    public static ItemBookingsDto toItemBookingsDto(Item item, BookingDateDto lastBooking, BookingDateDto nextBooking) {
+    public static ItemBookingsDto toItemBookingsDto(
+            Item item,
+            BookingDateDto lastBooking,
+            BookingDateDto nextBooking,
+            List<CommentDto> comments) {
         return ItemBookingsDto.builder()
                 .id(item.getId())
                 .name(item.getName())
@@ -52,6 +59,7 @@ public final class ItemMapper {
                 .available(item.isAvailable())
                 .lastBooking(lastBooking)
                 .nextBooking(nextBooking)
+                .comments(comments)
                 .build();
     }
 }

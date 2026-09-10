@@ -13,7 +13,7 @@ import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class BookingMapper {
+public final class BookingMapper {
     public static BookingDto toBookingDto(Booking booking) {
         return BookingDto.builder()
                 .id(booking.getId())

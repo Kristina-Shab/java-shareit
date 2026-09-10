@@ -1,9 +1,6 @@
-package ru.practicum.shareit.booking.model;
+package ru.practicum.shareit.item.comment;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,47 +28,45 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "bookings")
-public class Booking {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date")
-    private LocalDateTime start;
+    private String text;
 
-    @Column(name = "end_date")
-    private LocalDateTime end;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    @ToString.Exclude
+    private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     @ToString.Exclude
     private Item item;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booker_id")
-    @ToString.Exclude
-    private User booker;
-
-    @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    private LocalDateTime created;
 
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer()
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o)
+                .getHibernateLazyInitializer()
                 .getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this)
-                .getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+                .getHibernateLazyInitializer()
+                .getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Booking booking = (Booking) o;
-        return getId() != null && Objects.equals(getId(), booking.getId());
+        Comment comment = (Comment) o;
+        return getId() != null && Objects.equals(getId(), comment.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
-                .getPersistentClass().hashCode() : getClass().hashCode();
+                .getPersistentClass()
+                .hashCode() : getClass().hashCode();
     }
 }
