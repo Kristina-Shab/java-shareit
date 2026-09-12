@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void checkUserByBooker(Long itemId, Long userId) {
-        boolean exists = !bookingRepository.existsByBookerIdAndItemIdAndEndBeforeAndStatus(
+        boolean exists = !bookingRepository.existsCompletedBooking(
                 userId, itemId, LocalDateTime.now(), BookingStatus.APPROVED
         );
         if (exists) {
@@ -112,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private ItemBookingsDto buildItemBookingsDto(Item item, LocalDateTime now) {
-        List<Booking> bookings = bookingRepository.findByItemIdOrderByStartDesc(item.getId());
+        List<Booking> bookings = bookingRepository.findByItem(item.getId());
         BookingDateDto lastBooking = findLastBooking(bookings, now).orElse(null);
         BookingDateDto nextBooking = findNextBooking(bookings, now).orElse(null);
         List<CommentDto> comments = getComments(item.getId());

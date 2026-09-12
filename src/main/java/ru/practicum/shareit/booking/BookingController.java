@@ -17,6 +17,8 @@ import ru.practicum.shareit.booking.model.State;
 
 import java.util.Collection;
 
+import static ru.practicum.shareit.common.Constants.X_SHARER_USER_ID;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     public BookingDto findById(
             @PathVariable Long bookingId,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return bookingService.findById(bookingId, userId);
     }
@@ -35,7 +37,7 @@ public class BookingController {
     @GetMapping
     public Collection<BookingDto> getByBooker(
             @RequestParam(defaultValue = "ALL") State state,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return bookingService.getByBooker(userId, state);
     }
@@ -43,7 +45,7 @@ public class BookingController {
     @GetMapping("/owner")
     public Collection<BookingDto> getByOwner(
             @RequestParam(defaultValue = "ALL") State state,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return bookingService.getByOwner(userId, state);
     }
@@ -51,7 +53,7 @@ public class BookingController {
     @PostMapping
     public BookingDto create(
             @Valid @RequestBody BookingCreateDto booking,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return bookingService.create(booking, userId);
     }
@@ -60,7 +62,7 @@ public class BookingController {
     public BookingDto approve(
             @PathVariable Long bookingId,
             @RequestParam Boolean approved,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return bookingService.approve(bookingId, userId, approved);
     }

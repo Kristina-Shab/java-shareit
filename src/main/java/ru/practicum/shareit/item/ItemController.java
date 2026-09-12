@@ -21,6 +21,8 @@ import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import java.util.Collection;
 import java.util.Optional;
 
+import static ru.practicum.shareit.common.Constants.X_SHARER_USER_ID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
@@ -28,14 +30,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public Collection<ItemBookingsDto> getMyItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Collection<ItemBookingsDto> getMyItems(@RequestHeader(X_SHARER_USER_ID) Long userId) {
         return itemService.getByOwner(userId);
     }
 
     @GetMapping("/{id}")
     public Optional<ItemBookingsDto> getItem(
             @PathVariable Long id,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return itemService.getById(id, userId);
     }
@@ -43,7 +45,7 @@ public class ItemController {
     @GetMapping("/search")
     public Collection<ItemDto> search(
             @RequestParam String text,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return itemService.search(text);
     }
@@ -51,7 +53,7 @@ public class ItemController {
     @PostMapping
     public ItemDto create(
             @Valid @RequestBody ItemCreateDto item,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return itemService.create(item, userId);
     }
@@ -60,7 +62,7 @@ public class ItemController {
     public ItemDto update(
             @PathVariable Long id,
             @Valid @RequestBody ItemUpdateDto item,
-            @RequestHeader("X-Sharer-User-Id") Long userId
+            @RequestHeader(X_SHARER_USER_ID) Long userId
     ) {
         return itemService.update(id, item, userId);
     }
@@ -69,7 +71,7 @@ public class ItemController {
     public CommentDto addComment(
             @PathVariable Long itemId,
             @Valid @RequestBody CommentCreateDto dto,
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(X_SHARER_USER_ID) Long userId) {
         return itemService.createComment(itemId, dto, userId);
     }
 }
