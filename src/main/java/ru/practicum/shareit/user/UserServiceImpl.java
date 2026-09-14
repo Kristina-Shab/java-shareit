@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserCreateDto;
@@ -24,8 +25,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto create(UserCreateDto userRequest) {
-        if (userRepository.emailExists(userRequest.getEmail())) {
+        if (userRepository.existsByEmail(userRequest.getEmail())) {
             throw new ConflictException("Пользователь с email: " + userRequest.getEmail() + " уже существует.");
         }
         User user = UserMapper.toUser(userRequest);
@@ -34,25 +36,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto update(Long id, UserUpdateDto userRequest) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + id + " не найден"));
 
         if (userRequest.getEmail() != null
                 && !userRequest.getEmail().equals(existingUser.getEmail())
-                && userRepository.emailExists(userRequest.getEmail())) {
+                && userRepository.existsByEmail(userRequest.getEmail())) {
             throw new ConflictException("Пользователь с email: " + userRequest.getEmail() + " уже существует.");
         }
 
         User updatedUser = UserMapper.updateUserFields(existingUser, userRequest);
-        User savedUser = userRepository.update(id, updatedUser);
+        User savedUser = userRepository.save(updatedUser);
         return UserMapper.toUserDto(savedUser);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        User user = userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + id + " не найден"));
-        userRepository.delete(user);
+        userRepository.deleteById(id);
     }
 }

@@ -25,4 +25,16 @@ public class ErrorHandler {
     public ErrorResponse handleConflict(ConflictException e) {
         return new ErrorResponse("Ошибка данных", e.getMessage());
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleForbidden(ForbiddenException e) {
+        return new ErrorResponse("Ошибка доступа", e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleAllExceptions(Exception e) {
+        return new ErrorResponse("Непредвиденная ошибка", e.getMessage());
+    }
 }
