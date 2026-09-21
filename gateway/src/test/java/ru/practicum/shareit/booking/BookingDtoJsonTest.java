@@ -25,13 +25,7 @@ class BookingDtoJsonTest {
 
     @Test
     void testBookingCreateDtoDeserialize() throws Exception {
-        String content = """
-                {
-                  "itemId": 10,
-                  "start": "2026-10-01T10:00:00",
-                  "end": "2026-10-05T10:00:00"
-                }
-                """;
+        String content = "{\"itemId\": 10, \"start\": \"2026-10-01T10:00:00\", \"end\": \"2026-10-05T10:00:00\"}";
         BookingCreateDto dto = createJson.parseObject(content);
 
         assertThat(dto.getItemId()).isEqualTo(10L);

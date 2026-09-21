@@ -16,8 +16,8 @@
 
     <name>ShareIt</name>
     <modules>
-        <module>shareIt-gateway</module>
-	    <module>shareIt-server</module>
+        <module>gateway</module>
+	    <module>server</module>
 	</modules>
 
     <properties>
@@ -80,11 +80,18 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.8.5.0</version>
+					<version>4.9.3.0</version>
 					<configuration>
 						<effort>Max</effort>
 						<threshold>High</threshold>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.ow2.asm</groupId>
+							<artifactId>asm</artifactId>
+							<version>9.9.1</version>
+						</dependency>
+					</dependencies>
 					<executions>
 						<execution>
 							<goals>

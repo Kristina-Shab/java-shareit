@@ -23,12 +23,7 @@ class UserDtoJsonTest {
 
     @Test
     void testUserCreateDtoDeserialize() throws Exception {
-        String content = """
-                {
-                  "name": "Имя",
-                  "email": "Email@mail.ru"
-                }
-                """;
+        String content = "{\"name\": \"Имя\", \"email\": \"Email@mail.ru\"}";
         UserCreateDto dto = createJson.parseObject(content);
 
         assertThat(dto.getName()).isEqualTo("Имя");

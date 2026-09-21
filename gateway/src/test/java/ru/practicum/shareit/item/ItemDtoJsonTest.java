@@ -23,13 +23,7 @@ class ItemDtoJsonTest {
 
     @Test
     void testItemCreateDtoDeserialize() throws Exception {
-        String content = """
-                {
-                  "name": "Название",
-                  "description": "Описание",
-                  "available": true
-                }
-                """;
+        String content = "{\"name\": \"Название\", \"description\": \"Описание\", \"available\": true}";
         ItemCreateDto dto = createJson.parseObject(content);
 
         assertThat(dto.getName()).isEqualTo("Название");

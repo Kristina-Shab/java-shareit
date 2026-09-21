@@ -23,11 +23,7 @@ class CommentDtoJsonTest {
 
     @Test
     void testCommentCreateDtoDeserialize() throws Exception {
-        String content = """
-                {
-                  "text": "Отзыв"
-                }
-                """;
+        String content = "{\"text\": \"Отзыв\"}";
         CommentCreateDto dto = createJson.parseObject(content);
 
         assertThat(dto.getText()).isEqualTo("Отзыв");
