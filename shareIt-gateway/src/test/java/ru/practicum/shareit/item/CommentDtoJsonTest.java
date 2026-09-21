@@ -34,14 +34,14 @@ class CommentDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsValid() {
+    void testValidateWhenAllFieldsValid() {
         CommentCreateDto dto = makeValidCreateDto();
         Set<ConstraintViolation<CommentCreateDto>> violations = validator.validate(dto);
         assertThat(violations).isEmpty();
     }
 
     @Test
-    void TestValidateWhenTextNull() {
+    void testValidateWhenTextNull() {
         CommentCreateDto dto = makeValidCreateDto();
         dto.setText(null);
 
@@ -51,7 +51,7 @@ class CommentDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenTextBlank() {
+    void testValidateWhenTextBlank() {
         CommentCreateDto dto = makeValidCreateDto();
         dto.setText("   ");
 

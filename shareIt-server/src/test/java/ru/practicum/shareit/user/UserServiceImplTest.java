@@ -28,7 +28,7 @@ class UserServiceImplTest {
     private static final String NEW_EMAIL = "newname@mail.com";
 
     @Test
-    void TestFindById() {
+    void testFindById() {
         User user = createUser();
 
         Optional<UserDto> result = userService.findById(user.getId());
@@ -40,7 +40,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void TestCreate() {
+    void testCreate() {
         UserCreateDto dto = UserCreateDto.builder()
                 .name(NAME)
                 .email(EMAIL)
@@ -58,7 +58,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void TestUpdate() {
+    void testUpdate() {
         User user = createUser();
         UserUpdateDto dto = UserUpdateDto.builder()
                 .name(NEW_NAME)
@@ -77,7 +77,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void TestDelete() {
+    void testDelete() {
         User user = createUser();
         Long userId = user.getId();
         assertThat(userRepository.findById(userId)).isPresent();

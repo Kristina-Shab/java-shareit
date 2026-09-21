@@ -38,7 +38,7 @@ class ItemRequestControllerTest {
     private static final String DESCRIPTION = "Запрос";
 
     @Test
-    void TestGetByRequestor() throws Exception {
+    void testGetByRequestor() throws Exception {
         ItemRequestDto dto = makeRequestDto();
         when(itemRequestService.getByRequestor(USER_ID)).thenReturn(List.of(dto));
 
@@ -52,7 +52,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void TestGetAll() throws Exception {
+    void testGetAll() throws Exception {
         ItemRequestDto dto = makeRequestDto();
         when(itemRequestService.getAllOther(USER_ID)).thenReturn(List.of(dto));
 
@@ -66,7 +66,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void TestGetRequest() throws Exception {
+    void testGetRequest() throws Exception {
         ItemRequestDto dto = makeRequestDto();
         when(itemRequestService.getById(REQUEST_ID, USER_ID)).thenReturn(dto);
 
@@ -79,7 +79,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void TestCreate() throws Exception {
+    void testCreate() throws Exception {
         ItemRequestCreateDto createDto = makeCreateDto();
         ItemRequestShortDto dto = makeShortDto();
         when(itemRequestService.create(any(ItemRequestCreateDto.class), eq(USER_ID)))

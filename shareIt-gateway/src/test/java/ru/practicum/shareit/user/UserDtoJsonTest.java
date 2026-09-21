@@ -36,14 +36,14 @@ class UserDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsValid() {
+    void testValidateWhenAllFieldsValid() {
         UserCreateDto dto = makeValidCreateDto();
         Set<ConstraintViolation<UserCreateDto>> violations = validator.validate(dto);
         assertThat(violations).isEmpty();
     }
 
     @Test
-    void TestValidateWhenNameNull() {
+    void testValidateWhenNameNull() {
         UserCreateDto dto = makeValidCreateDto();
         dto.setName(null);
 
@@ -53,7 +53,7 @@ class UserDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenNameBlank() {
+    void testValidateWhenNameBlank() {
         UserCreateDto dto = makeValidCreateDto();
         dto.setName("   ");
 
@@ -63,7 +63,7 @@ class UserDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenEmailNull() {
+    void testValidateWhenEmailNull() {
         UserCreateDto dto = makeValidCreateDto();
         dto.setEmail(null);
 
@@ -73,7 +73,7 @@ class UserDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenEmailInvalid() {
+    void testValidateWhenEmailInvalid() {
         UserCreateDto dto = makeValidCreateDto();
         dto.setEmail("not-an-email");
 
@@ -83,7 +83,7 @@ class UserDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsInvalid() {
+    void testValidateWhenAllFieldsInvalid() {
         UserCreateDto dto = UserCreateDto.builder()
                 .name(null)
                 .email(null)

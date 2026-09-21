@@ -38,7 +38,7 @@ class BookingServiceImplTest {
     private static final String ITEM_DESCRIPTION = "Описание";
 
     @Test
-    void TestCreate() {
+    void testCreate() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
         Item item = createItem(owner);
@@ -65,7 +65,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void TestApprove() {
+    void testApprove() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
         Item item = createItem(owner);
@@ -81,7 +81,23 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void TestFindById() {
+    void testApproveRejected() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        Booking booking = createBooking(item, booker);
+
+        BookingDto result = bookingService.approve(booking.getId(), owner.getId(), false);
+
+        assertThat(result.getId()).isEqualTo(booking.getId());
+        assertThat(result.getStatus()).isEqualTo(BookingStatus.REJECTED);
+
+        Booking updatedBooking = bookingRepository.findById(booking.getId()).orElseThrow();
+        assertThat(updatedBooking.getStatus()).isEqualTo(BookingStatus.REJECTED);
+    }
+
+    @Test
+    void testFindById() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
         Item item = createItem(owner);
@@ -96,7 +112,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void TestGetByBooker() {
+    void testGetByBooker() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
         Item item = createItem(owner);
@@ -110,7 +126,68 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void TestGetByOwner() {
+    void testGetByBookerStateCurrent() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByBooker(booker.getId(), State.CURRENT);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void testGetByBookerStatePast() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByBooker(booker.getId(), State.PAST);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void testGetByBookerStateFuture() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByBooker(booker.getId(), State.FUTURE);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void testGetByBookerStateWaiting() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        Booking booking = createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByBooker(booker.getId(), State.WAITING);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().getId()).isEqualTo(booking.getId());
+    }
+
+    @Test
+    void testGetByBookerStateRejected() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByBooker(booker.getId(), State.REJECTED);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void testGetByOwner() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
         Item item = createItem(owner);
@@ -121,6 +198,67 @@ class BookingServiceImplTest {
         assertThat(result).hasSize(1);
         assertThat(result.getFirst().getId()).isEqualTo(booking.getId());
         assertThat(result.getFirst().getItem().getId()).isEqualTo(item.getId());
+    }
+
+    @Test
+    void testGetByOwnerStateCurrent() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByOwner(owner.getId(), State.CURRENT);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void testGetByOwnerStatePast() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByOwner(owner.getId(), State.PAST);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void testGetByOwnerStateFuture() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByOwner(owner.getId(), State.FUTURE);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void testGetByOwnerStateWaiting() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        Booking booking = createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByOwner(owner.getId(), State.WAITING);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().getId()).isEqualTo(booking.getId());
+    }
+
+    @Test
+    void testGetByOwnerStateRejected() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        createBooking(item, booker);
+
+        List<BookingDto> result = bookingService.getByOwner(owner.getId(), State.REJECTED);
+
+        assertThat(result).isEmpty();
     }
 
     private User createUser(String name, String email) {

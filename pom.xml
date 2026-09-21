@@ -99,6 +99,14 @@
 					<version>0.8.12</version>
 					<configuration>
 						<output>file</output>
+						<excludes>
+							<exclude>**/dto/**</exclude>
+							<exclude>**/model/**</exclude>
+							<exclude>**/exception/**</exclude>
+							<exclude>**/Constants*</exclude>
+							<exclude>**/*Application*</exclude>
+							<exclude>**/Comment.class</exclude>
+						</excludes>
 					</configuration>
 					<executions>
 						<execution>

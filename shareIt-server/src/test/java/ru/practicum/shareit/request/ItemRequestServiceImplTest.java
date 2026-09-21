@@ -34,7 +34,7 @@ class ItemRequestServiceImplTest {
     private static final String DESCRIPTION = "Запрос";
 
     @Test
-    void TestCreate(){
+    void testCreate() {
         User requestor = createUser(REQUESTOR_NAME, REQUESTOR_EMAIL);
         ItemRequestCreateDto dto = ItemRequestCreateDto.builder()
                 .description(DESCRIPTION)
@@ -51,7 +51,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void TestGetByRequestor(){
+    void testGetByRequestor() {
         User requestor = createUser(REQUESTOR_NAME, REQUESTOR_EMAIL);
         ItemRequest request = createRequest(requestor);
 
@@ -63,7 +63,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void TestGetAllOther(){
+    void testGetAllOther() {
         User requestor = createUser(REQUESTOR_NAME, REQUESTOR_EMAIL);
         User other = createUser(OTHER_NAME, OTHER_EMAIL);
         ItemRequest request = createRequest(requestor);
@@ -76,7 +76,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void TestGetById(){
+    void testGetById() {
         User requestor = createUser(REQUESTOR_NAME, REQUESTOR_EMAIL);
         ItemRequest request = createRequest(requestor);
 

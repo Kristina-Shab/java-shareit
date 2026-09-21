@@ -56,8 +56,8 @@ class UserControllerTest {
         when(userService.create(any(UserCreateDto.class))).thenReturn(dto);
 
         mvc.perform(post("/users")
-                .content(mapper.writeValueAsString(createDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(createDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(USER_ID))
                 .andExpect(jsonPath("$.name").value(NAME))

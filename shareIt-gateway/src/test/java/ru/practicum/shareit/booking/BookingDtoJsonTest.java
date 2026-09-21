@@ -40,14 +40,14 @@ class BookingDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsValid() {
+    void testValidateWhenAllFieldsValid() {
         BookingCreateDto dto = makeValidCreateDto();
         Set<ConstraintViolation<BookingCreateDto>> violations = validator.validate(dto);
         assertThat(violations).isEmpty();
     }
 
     @Test
-    void TestValidateWhenItemIdNull() {
+    void testValidateWhenItemIdNull() {
         BookingCreateDto dto = makeValidCreateDto();
         dto.setItemId(null);
 
@@ -58,7 +58,7 @@ class BookingDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenItemIdNegative() {
+    void testValidateWhenItemIdNegative() {
         BookingCreateDto dto = makeValidCreateDto();
         dto.setItemId(-1L);
 
@@ -69,7 +69,7 @@ class BookingDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenStartInPast() {
+    void testValidateWhenStartInPast() {
         BookingCreateDto dto = makeValidCreateDto();
         dto.setStart(LocalDateTime.now().minusDays(1));
 
@@ -79,7 +79,7 @@ class BookingDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenEndIsNow() {
+    void testValidateWhenEndIsNow() {
         BookingCreateDto dto = makeValidCreateDto();
         dto.setEnd(LocalDateTime.now());
 
@@ -89,7 +89,7 @@ class BookingDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsInvalid() {
+    void testValidateWhenAllFieldsInvalid() {
         BookingCreateDto dto = BookingCreateDto.builder()
                 .itemId(null)
                 .start(null)

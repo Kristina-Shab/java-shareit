@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.comment.CommentCreateDto;
 import ru.practicum.shareit.item.comment.CommentDto;
@@ -26,6 +27,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -46,7 +48,7 @@ class ItemServiceImplTest {
     private static final String COMMENT_TEXT = "Описание";
 
     @Test
-    void TestGetByOwner() {
+    void testGetByOwner() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         Item item = createItem(owner);
 
@@ -58,7 +60,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void TestGetById() {
+    void testGetById() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         Item item = createItem(owner);
 
@@ -71,7 +73,19 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void TestSearch() {
+    void testGetByIdWhenUserIsNotOwner() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User other = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+
+        Optional<ItemBookingsDto> result = itemService.getById(item.getId(), other.getId());
+
+        assertThat(result).isPresent();
+        assertThat(result.get().getId()).isEqualTo(item.getId());
+    }
+
+    @Test
+    void testSearch() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         Item item = createItem(owner);
 
@@ -83,7 +97,17 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void TestCreate() {
+    void testSearchWhenTextNull() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        createItem(owner);
+
+        Collection<ItemDto> result = itemService.search(null);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void testCreate() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         ItemCreateDto dto = ItemCreateDto.builder()
                 .name(ITEM_NAME)
@@ -104,7 +128,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void TestUpdate() {
+    void testUpdate() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         Item item = createItem(owner);
         ItemUpdateDto dto = ItemUpdateDto.builder()
@@ -126,7 +150,23 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void TestCreateComment() {
+    void testUpdateWhenUserIsNotOwner() {
+        User owner = createUser(OWNER_NAME, OWNER_EMAIL);
+        User other = createUser(BOOKER_NAME, BOOKER_EMAIL);
+        Item item = createItem(owner);
+        ItemUpdateDto dto = ItemUpdateDto.builder()
+                .name("Новое название")
+                .build();
+
+        Long itemId = item.getId();
+        Long otherId = other.getId();
+
+        assertThatThrownBy(() -> itemService.update(itemId, dto, otherId))
+                .isInstanceOf(ForbiddenException.class);
+    }
+
+    @Test
+    void testCreateComment() {
         User owner = createUser(OWNER_NAME, OWNER_EMAIL);
         User booker = createUser(BOOKER_NAME, BOOKER_EMAIL);
         Item item = createItem(owner);

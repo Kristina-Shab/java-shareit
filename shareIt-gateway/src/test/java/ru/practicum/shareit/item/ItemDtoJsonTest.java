@@ -38,14 +38,14 @@ class ItemDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsValid() {
+    void testValidateWhenAllFieldsValid() {
         ItemCreateDto dto = makeValidCreateDto();
         Set<ConstraintViolation<ItemCreateDto>> violations = validator.validate(dto);
         assertThat(violations).isEmpty();
     }
 
     @Test
-    void TestValidateWhenNameNull() {
+    void testValidateWhenNameNull() {
         ItemCreateDto dto = makeValidCreateDto();
         dto.setName(null);
 
@@ -55,7 +55,7 @@ class ItemDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenNameBlank() {
+    void testValidateWhenNameBlank() {
         ItemCreateDto dto = makeValidCreateDto();
         dto.setName("   ");
 
@@ -65,7 +65,7 @@ class ItemDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenDescriptionNull() {
+    void testValidateWhenDescriptionNull() {
         ItemCreateDto dto = makeValidCreateDto();
         dto.setDescription(null);
 
@@ -75,7 +75,7 @@ class ItemDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenDescriptionBlank() {
+    void testValidateWhenDescriptionBlank() {
         ItemCreateDto dto = makeValidCreateDto();
         dto.setDescription("   ");
 
@@ -85,7 +85,7 @@ class ItemDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAvailableNull() {
+    void testValidateWhenAvailableNull() {
         ItemCreateDto dto = makeValidCreateDto();
         dto.setAvailable(null);
 
@@ -95,7 +95,7 @@ class ItemDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsInvalid() {
+    void testValidateWhenAllFieldsInvalid() {
         ItemCreateDto dto = ItemCreateDto.builder()
                 .name(null)
                 .description(null)

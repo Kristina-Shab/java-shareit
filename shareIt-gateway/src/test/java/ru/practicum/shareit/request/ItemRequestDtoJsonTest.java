@@ -34,14 +34,14 @@ class ItemRequestDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenAllFieldsValid() {
+    void testValidateWhenAllFieldsValid() {
         ItemRequestCreateDto dto = makeValidCreateDto();
         Set<ConstraintViolation<ItemRequestCreateDto>> violations = validator.validate(dto);
         assertThat(violations).isEmpty();
     }
 
     @Test
-    void TestValidateWhenDescriptionNull() {
+    void testValidateWhenDescriptionNull() {
         ItemRequestCreateDto dto = makeValidCreateDto();
         dto.setDescription(null);
 
@@ -51,7 +51,7 @@ class ItemRequestDtoJsonTest {
     }
 
     @Test
-    void TestValidateWhenDescriptionBlank() {
+    void testValidateWhenDescriptionBlank() {
         ItemRequestCreateDto dto = makeValidCreateDto();
         dto.setDescription("   ");
 

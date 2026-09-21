@@ -45,7 +45,7 @@ class ItemControllerTest {
     private static final String AUTHOR_NAME = "Владелец";
 
     @Test
-    void TestGetMyItems() throws Exception {
+    void testGetMyItems() throws Exception {
         ItemBookingsDto dto = makeBookingsDto();
         when(itemService.getByOwner(USER_ID)).thenReturn(List.of(dto));
 
@@ -60,7 +60,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void TestGetItem() throws Exception {
+    void testGetItem() throws Exception {
         ItemBookingsDto dto = makeBookingsDto();
         when(itemService.getById(ITEM_ID, USER_ID)).thenReturn(Optional.of(dto));
 
@@ -73,7 +73,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void TestSearch() throws Exception {
+    void testSearch() throws Exception {
         ItemDto dto = makeItemDto();
         when(itemService.search(NAME)).thenReturn(List.of(dto));
 
@@ -89,7 +89,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void TestCreate() throws Exception {
+    void testCreate() throws Exception {
         ItemCreateDto createDto = makeCreateDto();
         ItemDto dto = makeItemDto();
 
@@ -108,7 +108,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void TestUpdate() throws Exception {
+    void testUpdate() throws Exception {
         ItemUpdateDto updateDto = makeUpdateDto();
         ItemDto dto = makeItemDto();
 
@@ -127,7 +127,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void TestAddComment() throws Exception {
+    void testAddComment() throws Exception {
         CommentCreateDto createDto = makeCommentCreateDto();
         CommentDto dto = makeCommentDto();
 

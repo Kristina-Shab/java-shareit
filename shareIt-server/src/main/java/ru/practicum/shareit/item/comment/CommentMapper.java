@@ -8,7 +8,7 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommentMapper {
+public final class CommentMapper {
     public static CommentDto toCommentDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
